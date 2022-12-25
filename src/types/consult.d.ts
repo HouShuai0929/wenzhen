@@ -1,3 +1,4 @@
+import { Patient } from './user'
 // 文章类型   关注医生页面文章 | 推荐  | 减脂  | 饮食
 export type KnowledgeType = 'like' | 'recommend' | 'fatReduction' | 'food'
 
@@ -194,4 +195,20 @@ export type ConsultOrderItem = Consult & {
   pointDeduction: number
   // 实付款
   actualPayment: number
+  // 是否评价
+  evaluateFlag: 0 | 1
+}
+
+export type ConsultOrderListParams = PageParams & {
+  // 问诊记录类型
+  type: ConsultType
+}
+
+export type ConsultOrderPage = {
+  // 总页数
+  pageTotal: number
+  // 总条数
+  total: number
+  // 列表数据
+  rows: ConsultOrderItem[]
 }

@@ -26,7 +26,7 @@
     "pinia": "^2.0.28",
     "pinia-plugin-persistedstate": "^3.0.1",
     "socket.io-client": "^4.5.4",
-    "vant": "^4.0.2",
+    "vant": "^4.0.4",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },

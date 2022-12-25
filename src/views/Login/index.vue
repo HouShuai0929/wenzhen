@@ -12,8 +12,8 @@ console.log('router', router)
 console.log('route', route)
 const agree = ref(false)
 // 表单数据
-const mobile = ref('')
-const password = ref('')
+const mobile = ref('13230000100')
+const password = ref('abc12345')
 const code = ref('')
 // 控制密码是否显示
 const show = ref(false)

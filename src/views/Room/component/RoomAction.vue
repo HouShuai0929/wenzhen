@@ -44,11 +44,7 @@ const sendImage: UploaderAfterRead = async (data) => {
       v-model="text"
       @keyup.enter="sendText"
     ></van-field>
-    <van-uploader
-      :preview-image="false"
-      :disabled="disabled"
-      :after-read="sendImage"
-    >
+    <van-uploader :preview-image="false" :disabled="disabled" :after-read="sendImage">
       <cp-icon name="consult-img" />
     </van-uploader>
   </div>

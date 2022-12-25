@@ -26,7 +26,7 @@ specifiers:
   socket.io-client: ^4.5.4
   typescript: ~4.7.4
   unplugin-vue-components: ^0.22.12
-  vant: ^4.0.2
+  vant: ^4.0.4
   vite: ^4.0.0
   vite-plugin-svg-icons: ^2.0.1
   vue: ^3.2.45
@@ -42,7 +42,7 @@ dependencies:
   pinia: 2.0.28_e7lp6ggkpgyi5vqd44m2kxvk6i
   pinia-plugin-persistedstate: 3.0.1_pinia@2.0.28
   socket.io-client: 4.5.4
-  vant: 4.0.2_vue@3.2.45
+  vant: 4.0.4_vue@3.2.45
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
 
@@ -3796,8 +3796,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vant/4.0.2_vue@3.2.45:
-    resolution: {integrity: sha512-qv3YaysqDbDI4N1peuck0v2g/Zz2rH2ao2qLNn166ZsuPadCmwsuwaypT+eFWElAzj0P1f9aUEmFmdJJwGuRfw==}
+  /vant/4.0.4_vue@3.2.45:
+    resolution: {integrity: sha512-P9ue4ZXWkI4OxKdUGBGYrLsSSqpKoKMKXM7tnu6/63Yg9xfrTY/qmDtBQnqMWp9JMiCyEG6k8PAC4b+8x22AKg==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:

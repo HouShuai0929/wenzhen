@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  getPatientList,
-  addPatient,
-  editPatient,
-  delPatient
-} from '@/services/user'
+import { getPatientList, addPatient, editPatient, delPatient } from '@/services/user'
 import type { PatientList, Patient } from '@/types/user'
 import { showToast, showSuccessToast, showConfirmDialog } from 'vant'
 import { computed, onMounted, ref } from 'vue'
@@ -79,14 +74,11 @@ const submit = async () => {
   if (!patient.value.name) return showToast('请输入真实姓名')
   if (!patient.value.idCard) return showToast('请输入身份证号')
   const validate = new Validator()
-  if (!validate.isValid(patient.value.idCard))
-    return showToast('身份证格式错误')
+  if (!validate.isValid(patient.value.idCard)) return showToast('身份证格式错误')
   const { sex } = validate.getInfo(patient.value.idCard)
   if (patient.value.gender !== sex) return showToast('性别和身份证不符')
   // 添加 & 修改
-  patient.value.id
-    ? await editPatient(patient.value)
-    : await addPatient(patient.value)
+  patient.value.id ? await editPatient(patient.value) : await addPatient(patient.value)
   show.value = false
   loadList()
   showSuccessToast(patient.value.id ? '编辑成功' : '添加成功')
@@ -143,9 +135,7 @@ const next = () => {
       >
         <div class="info">
           <span class="name">{{ item.name }}</span>
-          <span class="id">{{
-            item.idCard.replace(/^(.{6})(?:\d+)(.{4})$/, '\$1******\$2')
-          }}</span>
+          <span class="id">{{ item.idCard.replace(/^(.{6})(?:\d+)(.{4})$/, '\$1******\$2') }}</span>
           <span>{{ item.genderValue }}</span>
           <span>{{ item.age }}岁</span>
         </div>
@@ -169,23 +159,12 @@ const next = () => {
         @click-right="submit"
       ></cp-nav-bar>
       <van-form autocomplete="off">
-        <van-field
-          v-model="patient.name"
-          label="真实姓名"
-          placeholder="请输入真实姓名"
-        />
-        <van-field
-          v-model="patient.idCard"
-          label="身份证号"
-          placeholder="请输入身份证号"
-        />
+        <van-field v-model="patient.name" label="真实姓名" placeholder="请输入真实姓名" />
+        <van-field v-model="patient.idCard" label="身份证号" placeholder="请输入身份证号" />
         <van-field label="性别">
           <!-- 单选按钮组件 -->
           <template #input>
-            <cp-radio-btn
-              :options="options"
-              v-model="patient.gender"
-            ></cp-radio-btn>
+            <cp-radio-btn :options="options" v-model="patient.gender"></cp-radio-btn>
           </template>
         </van-field>
         <van-field label="默认就诊人">

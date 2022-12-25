@@ -2,6 +2,8 @@
 import CpNavBar from '@/components/CpNavBar.vue'
 import CpIcon from '@/components/CpIcon.vue'
 import CpRadioBtn from '@/components/CpRadioBtn.vue'
+import CpConsultMore from '@/components/CpConsultMore'
+import CpPaySheet from '@/components/CpPaySheet'
 // 2. 声明了vue 类型模块
 declare module 'vue' {
   // 3. 给vue 添加了全局类型, 通过 interface进行了合并
@@ -10,5 +12,7 @@ declare module 'vue' {
     CpNavBar: typeof CpNavBar
     CpIcon: typeof CpIcon
     CpRadioBtn: typeof CpRadioBtn
+    CpConsultMore: typeof CpConsultMore
+    CpPaySheet: typeof CpPaySheet
   }
 }

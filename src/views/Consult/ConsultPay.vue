@@ -1,28 +1,18 @@
 <script setup lang="ts">
-import {
-  getConsultOrderPre,
-  createConsultOrder,
-  getConsultOrderPayUrl
-} from '@/services/consult'
+import { getConsultOrderPre, createConsultOrder, getConsultOrderPayUrl } from '@/services/consult'
 import { getPatientDetail } from '@/services/user'
 import { ref, onMounted } from 'vue'
 import type { ConsultOrderPreData } from '@/types/consult'
 import type { Patient } from '@/types/user'
 import { useConsultStore } from '@/stores'
-import {
-  showDialog,
-  showConfirmDialog,
-  showLoadingToast,
-  showToast
-} from 'vant'
-import { onBeforeRouteLeave } from 'vue-router'
-import router from '@/router'
+import { showDialog, showConfirmDialog, showLoadingToast, showToast } from 'vant'
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
 // 1. 定义类型
 // 2. 定义接口
 // 3. 调用接口获取数据
 // 4. 渲染数据
 const store = useConsultStore()
-
+const router = useRouter()
 const payInfo = ref<ConsultOrderPreData>()
 const loadData = async () => {
   const res = await getConsultOrderPre({
@@ -54,8 +44,7 @@ onMounted(() => {
   ) {
     return showDialog({
       title: '温馨提示',
-      message:
-        '问诊信息不完整请重新填写,如有未支付订单可以在问诊记录中继续支付',
+      message: '问诊信息不完整请重新填写,如有未支付订单可以在问诊记录中继续支付',
       closeOnPopstate: false
     }).then(() => {
       router.push('/')
@@ -139,11 +128,7 @@ const pay = async () => {
     <van-cell-group>
       <van-cell title="优惠券" :value="`-¥${payInfo.couponDeduction}`" />
       <van-cell title="积分抵扣" :value="`-¥${payInfo.pointDeduction}`" />
-      <van-cell
-        title="实付款"
-        :value="`-¥${payInfo.actualPayment}`"
-        class="pay-price"
-      />
+      <van-cell title="实付款" :value="`¥${payInfo.actualPayment}`" class="pay-price" />
     </van-cell-group>
     <div class="pay-space"></div>
 
@@ -156,9 +141,7 @@ const pay = async () => {
       <van-cell title="病情描述" :label="store.consult.illnessDesc"></van-cell>
     </van-cell-group>
     <div class="pay-schema">
-      <van-checkbox v-model="agree"
-        >我已同意 <span class="text">支付协议</span></van-checkbox
-      >
+      <van-checkbox v-model="agree">我已同意 <span class="text">支付协议</span></van-checkbox>
     </div>
 
     <van-submit-bar
@@ -170,7 +153,13 @@ const pay = async () => {
       @click="submit"
     />
     <!-- 支付抽屉 -->
-    <van-action-sheet
+    <cp-pay-sheet
+      v-model:show="show"
+      :order-id="orderId"
+      :actualPayment="payInfo.actualPayment"
+      :onClose="onClose"
+    ></cp-pay-sheet>
+    <!-- <van-action-sheet
       :close-on-popstate="false"
       v-model:show="show"
       title="选择支付方式"
@@ -182,24 +171,18 @@ const pay = async () => {
         <van-cell-group>
           <van-cell title="微信支付" @click="paymentMethod = 0">
             <template #icon><cp-icon name="consult-wechat" /></template>
-            <template #extra
-              ><van-checkbox :checked="paymentMethod === 0"
-            /></template>
+            <template #extra><van-checkbox :checked="paymentMethod === 0" /></template>
           </van-cell>
           <van-cell title="支付宝支付" @click="paymentMethod = 1">
             <template #icon><cp-icon name="consult-alipay" /></template>
-            <template #extra
-              ><van-checkbox :checked="paymentMethod === 1"
-            /></template>
+            <template #extra><van-checkbox :checked="paymentMethod === 1" /></template>
           </van-cell>
         </van-cell-group>
         <div class="btn">
-          <van-button type="primary" round block @click="pay"
-            >立即支付</van-button
-          >
+          <van-button type="primary" round block @click="pay">立即支付</van-button>
         </div>
       </div>
-    </van-action-sheet>
+    </van-action-sheet> -->
   </div>
 </template>
 
