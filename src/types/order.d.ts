@@ -42,3 +42,87 @@ export type AddressItem = Address & {
   // 邮政编码
   postalCode: string
 }
+
+// 药品订单详情
+export type OrderDetail = {
+  // 药品订单id
+  id: string
+  // 订单编号
+  orderNo: string
+  // 订单类型
+  type: 4
+  // 创建时间
+  createTime: string
+  // 处方id
+  prescriptionId: string
+  // 药品订单状态
+  status: OrderType
+  // 药品订单状态文字
+  statusValue: string
+  // 处方的药品列表
+  medicines: Medical[]
+  // 待支付的倒计时
+  countDown: number
+  // 地址信息
+  addressInfo: Address
+  // 物流信息
+  expressInfo: {
+    content: string
+    time: string
+  }
+  // 支付时间
+  payTime: string
+  // 支付方式
+  paymentMethod?: 0 | 1
+  // 应付款
+  payment: number
+  // 积分
+  pointDeduction: number
+  // 优惠券
+  couponDeduction: number
+  // 运费
+  expressFee: number
+  // 实付款
+  actualPayment: number
+  // 药品订单对应的问诊室id
+  roomId: string
+}
+
+export type Express = {
+  // 物流信息ID
+  id: string
+  // 物流内容
+  content: string
+  // 创建时间
+  createTime: string
+  // 物流状态
+  status: ExpressStatus
+  // 状态文章
+  statusValue: string
+}
+
+export type Location = {
+  // 经度
+  longitude: string
+  // 纬度
+  latitude: string
+}
+
+export type Logistics = {
+  // 预计送达时间
+  estimatedTime: string
+  // 物流公司名称
+  name: string
+  // 物流编号
+  awbNo: string
+  // 最新物流状态
+  status: ExpressStatus
+  // 最新物流状态文字
+  statusValue: string
+  // 物流信息数组
+  list: Express[]
+  // 轨迹信息数组
+  logisticsInfo: Location[]
+  // 当前运输位置
+  currentLocationInfo: Location
+}

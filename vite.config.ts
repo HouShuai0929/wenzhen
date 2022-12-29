@@ -5,14 +5,25 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
-
+import { createHtmlPlugin } from 'vite-plugin-html'
+import { viteMockServe } from 'vite-plugin-mock'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
+  server: {
+    port: 80,
+    host: true,
+    open: true
+  },
   plugins: [
     vue({
       reactivityTransform: true
     }),
+    viteMockServe({
+      mockPath: './src/mock',
+      localEnabled: true
+    }),
+    createHtmlPlugin(),
     // 自动导入的插件，解析器可以是 vant element and-vue
     Components({
       dts: false,

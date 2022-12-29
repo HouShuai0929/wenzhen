@@ -8,9 +8,9 @@ import { showImagePreview, showToast } from 'vant'
 import { useUserStore } from '@/stores'
 import dayjs from 'dayjs'
 // import { getPrescriptionPic } from '@/services/consult'
-import { useShowPrescription } from '@/composable'
 import { useRouter } from 'vue-router'
 import EvaluteCard from './EvaluateCard.vue'
+import { useShowPrescription } from '@/composable'
 import { getConsultFlagTimeText, getIllnessTimeText } from '@/utils/fillter'
 const formatTime = (time: string) => dayjs(time).format('HH:mm')
 defineProps<{
@@ -42,8 +42,9 @@ const buy = (pre: Prescription | undefined) => {
     router.push(`/order/${pre.orderId}`)
   }
 }
+
+// 查看处方
 const { showPrescription } = useShowPrescription()
-// // 查看处方
 // const showPrescription = async (id: string) => {
 //   if (id) {
 //     const res = await getPrescriptionPic(id)

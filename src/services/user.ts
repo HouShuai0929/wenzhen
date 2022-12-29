@@ -1,11 +1,5 @@
 import { request } from '@/utils/request'
-import type {
-  User,
-  CodeType,
-  UserInfo,
-  PatientList,
-  Patient
-} from '@/types/user'
+import type { User, CodeType, UserInfo, PatientList, Patient } from '@/types/user'
 
 // 密码登录
 export const loginByPassword = (mobile: string, password: string) =>
@@ -26,15 +20,17 @@ export const getUserInfo = () => request<UserInfo>('/patient/myUser')
 export const getPatientList = () => request<PatientList>('/patient/mylist')
 
 // 添加患者信息
-export const addPatient = (patient: Patient) =>
-  request('/patient/add', 'POST', patient)
+export const addPatient = (patient: Patient) => request('/patient/add', 'POST', patient)
 // 编辑患者信息
-export const editPatient = (patient: Patient) =>
-  request('/patient/update', 'PUT', patient)
+export const editPatient = (patient: Patient) => request('/patient/update', 'PUT', patient)
 // 删除患者信息
-export const delPatient = (id: string) =>
-  request(`/patient/del/${id}`, 'DELETE')
+export const delPatient = (id: string) => request(`/patient/del/${id}`, 'DELETE')
 
 // 查询患者详情
-export const getPatientDetail = (id: string) =>
-  request<Patient>(`/patient/info/${id}`)
+export const getPatientDetail = (id: string) => request<Patient>(`/patient/info/${id}`)
+// 第三方登录(qq)
+export const LoginByQQ = (openId: string) =>
+  request<User>('/login/thirdparty', 'POST', { openId, source: 'qq' })
+// 绑定手机号
+export const bindMobile = (data: { mobile: string; code: string; openId: string }) =>
+  request<User>('/login/binding', 'POST', data)

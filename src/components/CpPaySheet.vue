@@ -2,11 +2,12 @@
 import { ref } from 'vue'
 import { showToast, showLoadingToast } from 'vant'
 import { getConsultOrderPayUrl } from '@/services/consult'
-const { orderId, show } = defineProps<{
+const { orderId, show, payCallback } = defineProps<{
   show: boolean
   orderId: string
   actualPayment: number
   onClose?: () => void
+  payCallback: string
 }>()
 const emit = defineEmits<{
   (e: 'update:show', val: boolean): void
@@ -20,7 +21,7 @@ const pay = async () => {
   const res = await getConsultOrderPayUrl({
     orderId: orderId,
     paymentMethod: paymentMethod.value,
-    payCallback: 'http://localhost:5173/room'
+    payCallback: import.meta.env.VITE_APP_CALLBACK + payCallback
   })
   window.location.href = res.data.payUrl
 }

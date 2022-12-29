@@ -126,6 +126,34 @@ const routes = [
     meta: {
       title: '药品支付'
     }
+  },
+  {
+    path: '/order/pay/result',
+    component: () => import('@/views/Order/OrderPayResult.vue'),
+    meta: {
+      title: '药品支付结果'
+    }
+  },
+  {
+    path: '/order/:id',
+    component: () => import('@/views/Order/OrderDetail.vue'),
+    meta: {
+      title: '药品订单详情'
+    }
+  },
+  {
+    path: '/order/logistics/:id',
+    component: () => import('@/views/Order/OrderLogistics.vue'),
+    meta: {
+      title: '物流详情'
+    }
+  },
+  {
+    path: '/login/callback',
+    component: () => import('@/views/Login/LoginCallback.vue'),
+    meta: {
+      title: 'QQ登录-绑定手机'
+    }
   }
 ]
 
@@ -142,8 +170,9 @@ router.beforeEach((to) => {
   // 判断token是否存在
   const store = useUserStore()
   // 通过白名单控制不需要登录的页面
-  const whiteList = ['/login']
+  const whiteList = ['/login', '/login/callback']
   // 如果不在白名单且没有登录, 跳转到登录页面
+
   if (!store.user?.token && !whiteList.includes(to.path)) return '/login'
 })
 

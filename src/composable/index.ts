@@ -1,9 +1,14 @@
 // 命名规范 useXxx  表示使用某功能
-import { ref } from 'vue'
 import { followDoctor, getPrescriptionPic, cancelOrder, deleteOrder } from '@/services/consult'
 import type { FollowType, ConsultOrderItem } from '@/types/consult'
 import { OrderType } from '@/enums'
-import { showImagePreview, showSuccessToast, showFailToast } from 'vant'
+import { getMedicalOrderDetail } from '@/services/order'
+import type { OrderDetail } from '@/types/order'
+
+import { sendMobileCode } from '@/services/user'
+import { ref, onMounted, onUnmounted, type Ref } from 'vue'
+import { showImagePreview, showSuccessToast, showFailToast, type FormInstance } from 'vant'
+import type { CodeType } from '@/types/user'
 // 之前关注医生没传入type 是因为有默认值,封装成函数了,再想关注其他类型的,需要把类型传入
 export const useFollow = (type: FollowType = 'doc') => {
   const loading = ref(false)
@@ -69,6 +74,24 @@ export const useCancelOrder = () => {
   }
 }
 
+// 获取订单详情数据 (并不是很推荐这种封装)
+export const useOrderDetail = (id: string) => {
+  const order = ref<OrderDetail>()
+  const loading = ref(false)
+  onMounted(async () => {
+    loading.value = true
+    try {
+      const res = await getMedicalOrderDetail(id)
+      order.value = res.data
+    } finally {
+      loading.value = false
+    }
+  })
+  return {
+    order,
+    loading
+  }
+}
 // 封装删除订单逻辑
 export const useDeleteOrder = (cb: () => void) => {
   const deleteLoading = ref(false)
@@ -97,5 +120,38 @@ export const useDeleteOrder = (cb: () => void) => {
   return {
     deleteLoading,
     deleteConsultOrder
+  }
+}
+
+// 发送短信验证码
+export const useSendMobileCode = (mobile: Ref<string>, type: CodeType = 'login') => {
+  // form的ref数据
+  const form = ref<FormInstance>()
+  // 发送验证码
+  const time = ref(0)
+  // 定时器Id 用于后续清除定时器
+  let timeId: number
+  const send = async () => {
+    // 已经倒计时时 time值大于0, 此时不能发送验证码
+    if (time.value > 0) return
+    await form.value?.validate('mobile')
+    // 手机号符合规范才去调用接口
+    await sendMobileCode(mobile.value, type)
+    showSuccessToast('发送验证码成功')
+    time.value = 60
+    timeId = window.setInterval(() => {
+      time.value--
+      if (time.value <= 0) window.clearInterval(timeId)
+    }, 1000)
+  }
+  // 组件卸载的时候需要清空定时器,防止内存泄漏
+  onUnmounted(() => {
+    window.clearInterval(timeId)
+  })
+
+  return {
+    form,
+    time,
+    send
   }
 }

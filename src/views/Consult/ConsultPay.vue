@@ -158,6 +158,7 @@ const pay = async () => {
       :order-id="orderId"
       :actualPayment="payInfo.actualPayment"
       :onClose="onClose"
+      payCallback="/room"
     ></cp-pay-sheet>
     <!-- <van-action-sheet
       :close-on-popstate="false"

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { onUnmounted, ref } from 'vue'
+import { onUnmounted, ref, onMounted } from 'vue'
 import { mobileRules, passwordRules, codeRules } from '@/utils/rules'
 import { showToast, showSuccessToast, type FormInstance } from 'vant'
 import { loginByPassword, sendMobileCode, loginByMobile } from '@/services/user'
 import { useUserStore } from '@/stores'
 import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 const store = useUserStore()
 const router = useRouter()
 const route = useRoute()
@@ -12,7 +13,7 @@ console.log('router', router)
 console.log('route', route)
 const agree = ref(false)
 // 表单数据
-const mobile = ref('13230000100')
+const mobile = ref('13230000001')
 const password = ref('abc12345')
 const code = ref('')
 // 控制密码是否显示
@@ -59,14 +60,24 @@ onUnmounted(() => {
 
 // form的ref数据
 const form = ref<FormInstance>()
+
+onMounted(() => {
+  // dom都渲染完了,使用QC生成qq登录的按钮,目的是得到跳转链接
+  // QC.Login({
+  //   btnId: 'qq'
+  // })
+  axios.get('/patient/message/list').then((res) => {
+    console.log('res', res)
+  })
+})
+const qqUrl = `https://graph.qq.com/oauth2.0/authorize?client_id=102015968&amp;response_type=token&amp;scope=all&amp;redirect_uri=${encodeURIComponent(
+  import.meta.env.VITE_APP_CALLBACK + '/login/callback'
+)}`
 </script>
 
 <template>
   <div class="login-page">
-    <cp-nav-bar
-      right-text="注册"
-      @click-right="$router.push('/register')"
-    ></cp-nav-bar>
+    <cp-nav-bar right-text="注册" @click-right="$router.push('/register')"></cp-nav-bar>
     <div class="login-head">
       <h3>{{ isPass ? '密码登录' : '短信验证码登录' }}</h3>
       <a href="javascript:;" @click="isPass = !isPass">
@@ -92,18 +103,11 @@ const form = ref<FormInstance>()
         :rules="passwordRules"
       >
         <template #button>
-          <cp-icon
-            @click="show = !show"
-            :name="`login-eye-${show ? 'on' : 'off'}`"
-          ></cp-icon>
+          <cp-icon @click="show = !show" :name="`login-eye-${show ? 'on' : 'off'}`"></cp-icon>
         </template>
       </van-field>
       <!-- 验证码 -->
-      <van-field
-        v-else
-        v-model="code"
-        placeholder="短信验证码"
-        :rules="codeRules"
+      <van-field v-else v-model="code" placeholder="短信验证码" :rules="codeRules"
         ><template #button>
           <span class="btn-send" :class="{ active: time > 0 }" @click="send">{{
             time > 0 ? `${time}s后再次发送` : '发送验证码'
@@ -119,9 +123,7 @@ const form = ref<FormInstance>()
         </van-checkbox>
       </div>
       <div class="cp-cell">
-        <van-button round block type="primary" native-type="submit">
-          登 录
-        </van-button>
+        <van-button round block type="primary" native-type="submit"> 登 录 </van-button>
       </div>
       <div class="cp-cell">
         <a href="javascript:;">忘记密码？</a>
@@ -130,9 +132,9 @@ const form = ref<FormInstance>()
 
     <div class="login-other">
       <van-divider>第三方登录</van-divider>
-      <div class="icon">
+      <a class="icon" @click="store.setReturnUrl(route.query.returnUrl as string)" :href="qqUrl">
         <img src="@/assets/qq.svg" alt="" />
-      </div>
+      </a>
     </div>
   </div>
 </template>
